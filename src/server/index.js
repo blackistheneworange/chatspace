@@ -2,6 +2,7 @@ const express=require('express');
 const bp=require('body-parser')
 const cors=require('cors')
 const http=require('http')
+const path=require('path')
 const socketio=require('socket.io')
 
 const {getUser,insertUser,getUsers,deleteUser,formatMessage,getSpace,insertSpace,alterUserCount} =require('./utils');
@@ -14,9 +15,16 @@ const io=socketio(server)
 const port=process.env.PORT||3000;
 
 app.use(bp.urlencoded({extended:true}),bp.json())
-app.use(cors())
+//app.use(cors())
+
+app.use(express.static(path.resolve(__dirname,'../../dist')))
 
 app.use('/',chatRouter)
+
+app.get('*',(req,res)=>{
+	
+	res.sendFile(path.resolve(__dirname,'../../dist','index.html'))
+})
 
 io.on('connection',socket=>{
 	
