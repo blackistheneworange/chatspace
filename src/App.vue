@@ -1,19 +1,44 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Header :header="header"/>
+    <router-view :info="info" v-on:login="login" v-on:logout="logout" v-on:setHeaderDisplay="setHeaderDisplay"></router-view>
+    <Footer/>
   </div>
+ </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
+  import Header from './components/common/Header';
+  import Footer from './components/common/Footer';
+
+  export default{
+    name:'app',
+    components:{Header,Footer},
+    data(){
+      return{
+        info:{
+	  name:'',
+	  spaceID:'',
+	},
+	header:true
+      }
+    },
+    methods:{
+      login({name,spaceID}){
+        
+	this.info={...this.info,name:name,spaceID:spaceID}
+      },
+
+      logout(){
+        this.info={...this.info,name:'',spaceID:''}
+      },
+
+      setHeaderDisplay(condition){
+        this.header=condition;
+      }
+    }
   }
-}
 </script>
 
 <style>
@@ -23,6 +48,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
